@@ -19,3 +19,23 @@ export const GET_ISSUES = gql`
     }
   }
 `
+
+export const SEARCH_ISSUES = gql`
+  query SearchIssues($query: String!) {
+    search(type: ISSUE, query: $query, first: 15) {
+      nodes {
+        ... on Issue {
+          id
+          number
+          title
+          state
+          createdAt
+          updatedAt
+          comments {
+            totalCount
+          }
+        }
+      }
+    }
+  }
+`;

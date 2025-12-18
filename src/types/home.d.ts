@@ -14,3 +14,9 @@ export interface IIssuesData {
         } 
     } 
 }
+
+export interface ISearchIssuesData { 
+    search: { 
+        nodes: IIssuesNodes
+    } 
+}
