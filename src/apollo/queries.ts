@@ -1,9 +1,9 @@
 import { gql } from "@apollo/client"
 
 export const GET_ISSUES = gql`
-  query GetIssues {
+  query GetIssues ($state: [IssueState!]) {
     repository(owner: "facebook", name: "react") {
-      issues(first: 15, orderBy: {field: CREATED_AT, direction: DESC}) {
+      issues(first: 15, orderBy: {field: CREATED_AT, direction: DESC}, states: $state) {
         nodes {
           id
           number
@@ -19,3 +19,23 @@ export const GET_ISSUES = gql`
     }
   }
 `
+
+export const SEARCH_ISSUES = gql`
+  query SearchIssues($query: String!) {
+    search(type: ISSUE, query: $query, first: 15) {
+      nodes {
+        ... on Issue {
+          id
+          number
+          title
+          state
+          createdAt
+          updatedAt
+          comments {
+            totalCount
+          }
+        }
+      }
+    }
+  }
+`;
