@@ -1,9 +1,9 @@
 import { gql } from "@apollo/client"
 
 export const GET_ISSUES = gql`
-  query GetIssues ($state: [IssueState!]) {
+  query GetIssues ($state: [IssueState!], $orderBy: IssueOrderField!) {
     repository(owner: "facebook", name: "react") {
-      issues(first: 15, orderBy: {field: CREATED_AT, direction: DESC}, states: $state) {
+      issues(first: 15, orderBy: {field: $orderBy, direction: DESC}, states: $state) {
         nodes {
           id
           number

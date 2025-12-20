@@ -4,11 +4,19 @@ import IssueList from "../components/ItemsList"
 import type { IIssuesData, ISearchIssuesData } from "../types/home"
 import ItemsSearch from "../components/ItemsSearch"
 import { useState } from "react"
+import NewDropdown from "../components/NewDropdown"
+
+const sortOptions = [
+    { value: 'CREATED_AT', label: 'Created (desc)' },
+    { value: 'UPDATED_AT', label: 'Updated (desc)' },
+    { value: 'COMMENTS', label: 'Comments (desc)' },
+]
 
 export default () => {
     const [search, setSearch] = useState('')
     const [submittedSearch, setSubmittedSearch] = useState('')
-    const [issueState, setIssueState] = useState<'OPEN' | 'CLOSED' | 'ALL'>('OPEN')
+    const [issueState, setIssueState] = useState<'OPEN' | 'CLOSED' | 'ALL'>('ALL')
+    const [selectedSorting, setSelectedSorting] = useState<string>('CREATED_AT')
 
     const searchIsActive = submittedSearch.length > 0
 
@@ -17,10 +25,11 @@ export default () => {
         {
           variables: searchIsActive
             ? {
-              query: `repo:facebook/react is:issue is:${issueState} ${submittedSearch}`,
+              query: `repo:facebook/react is:issue ${issueState === 'ALL' ? '' : 'is:' + issueState.toLowerCase()} sort:${selectedSorting} ${submittedSearch}`,
             }
             : {
-              state: [issueState],
+              state: issueState === 'ALL' ? ['OPEN', 'CLOSED'] : [issueState],
+              orderBy: selectedSorting
             },
         }
     )
@@ -41,14 +50,28 @@ export default () => {
           }}
           searchIsActive={searchIsActive}
         />
-        <div className="pl-4 flex gap-2"> 
+        <div className="px-4 flex justify-between">
+          <div className="flex gap-2"> 
             <span 
-              className={`py-1 px-2 cursor-pointer rounded-md hover:bg-gray-100 text-sm ${issueState === 'OPEN' ? 'font-semibold text-gray-900' : 'text-gray-700 font-normal'}`}
+              className={`py-1 px-2 cursor-pointer rounded-md hover:bg-gray-100 text-sm ${issueState === 'ALL' ? 'font-bold text-gray-900' : 'text-gray-700 font-normal'}`}
+              onClick={() => setIssueState('ALL')}
+            > 
+              All 
+            </span>
+            <span 
+              className={`py-1 px-2 cursor-pointer rounded-md hover:bg-gray-100 text-sm ${issueState === 'OPEN' ? 'font-bold text-gray-900' : 'text-gray-700 font-normal'}`}
               onClick={() => setIssueState('OPEN')}
             > 
               Open 
             </span>
-            <span className={`py-1 px-2 cursor-pointer rounded-md hover:bg-gray-100 text-sm ${issueState === 'CLOSED' ? 'font-semibold text-gray-900' : 'text-gray-700'}`} onClick={() => setIssueState('CLOSED')}> Closed </span>
+            <span className={`py-1 px-2 cursor-pointer rounded-md hover:bg-gray-100 text-sm ${issueState === 'CLOSED' ? 'font-bold text-gray-900' : 'text-gray-700'}`} onClick={() => setIssueState('CLOSED')}> Closed </span>
+          </div>
+          <NewDropdown 
+            options={sortOptions}
+            value={selectedSorting}
+            onChange={(newSorting) => setSelectedSorting(newSorting as string)}
+            id="sort-issues-dropdown"
+          />
         </div>
         <IssueList issues={issues} />
     </div>

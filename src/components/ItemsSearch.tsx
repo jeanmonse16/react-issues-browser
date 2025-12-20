@@ -4,7 +4,7 @@ export default function ItemsSearch({ value, setValue, onSearch, clearSearch, se
     return <div className="pl-4 flex">
         <div className="relative">
           <input 
-            className="h-full w-80 pl-2 border rounded-l" 
+            className="h-full w-80 pl-2 border rounded-l ring-0 focus:outline-none f" 
             type="text" 
             placeholder="Search items..."
             value={value}

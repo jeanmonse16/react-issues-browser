@@ -4,7 +4,7 @@ export type IIssuesNodes = Array<{
     title: string;
     comments: {
         totalCount: number;
-    };
+    }
 }>
 
 export interface IIssuesData { 
