@@ -1,10 +1,10 @@
 import type { IItemsSearchProps } from "../types/itemsSearch";
 
 export default function ItemsSearch({ value, setValue, onSearch, clearSearch, searchIsActive }: IItemsSearchProps) {
-    return <div className="pl-4 flex">
+    return <div className="flex">
         <div className="relative">
           <input 
-            className="h-full w-80 pl-2 border rounded-l ring-0 focus:outline-none f" 
+            className="h-full w-full sm:w-80 pl-2 border rounded-l focus:outline-none focus:ring-1 focus:ring-indigo-400" 
             type="text" 
             placeholder="Search items..."
             value={value}
@@ -16,6 +16,6 @@ export default function ItemsSearch({ value, setValue, onSearch, clearSearch, se
          }
         </div>
         
-        <button onClick={onSearch} className="border-y border-r bg-gray-100 hover:bg-gray-200 cursor-pointer rounded-r p-1">🔍</button>
+        <button onClick={onSearch} className="border-y border-r bg-indigo-100 hover:bg-indigo-200 cursor-pointer rounded-r p-1">🔍</button>
     </div>
 }
