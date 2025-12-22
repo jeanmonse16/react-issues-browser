@@ -1,16 +1,13 @@
-import { Suspense } from "react"
+import { Route, Routes, Navigate } from "react-router"
 import Home from "./pages/Home"
-import ItemsListSkeleton from "./components/ItemsListSkeleton"
-import ErrorBoundary from "./components/ErrorBoundary"
+import IssueDetail from "./pages/IssueDetail"
 
 export default () => {
-    return <div className="h-full bg-white">
-        <Suspense fallback={<ItemsListSkeleton />}>
-          <ErrorBoundary>
-            <Suspense fallback={<ItemsListSkeleton />}>
-              <Home />
-            </Suspense>
-          </ErrorBoundary >
-        </Suspense>
-    </div>
+    return <Routes>
+      <Route path="/" element={<Navigate to="/issues" replace  />} />
+      <Route path="issues">
+        <Route index element={<Home />} />
+        <Route path=":issueId" element={<IssueDetail />} />
+      </Route>
+    </Routes>
 }
